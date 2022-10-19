@@ -1,4 +1,4 @@
-public class LinearEquation
+public class LinearEquation{
         /* Instance Variables */
         private int x1;
         private int y1;
@@ -24,7 +24,7 @@ public LinearEquation(int x1, int y1, int x2, int y2){
    the nearest hundredth */
         public double distance(){
             double dist = Math.sqrt(Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2));
-            return dist;
+            return roundedToHundredth(dist);
         }
 
 
@@ -32,8 +32,8 @@ public LinearEquation(int x1, int y1, int x2, int y2){
         /* Calculates and returns the y-intercept of the line between (x1, y1) and
            (x2, y2), rounded to the nearest hundredth */
         public double yIntercept(){
-            double y = y2 - (x2 * slope());
-            return y;
+            double y = (double) y2 - (x2 * slope());
+            return roundedToHundredth(y);
         }
 
 
@@ -41,8 +41,8 @@ public LinearEquation(int x1, int y1, int x2, int y2){
         /* Calculates and returns the slope of the line between (x1, y1) and
            (x2, y2), rounded to the nearest hundredth */
         public double slope(){
-            double slo = (y2-y1)/(x2-x1);
-            return slo;
+            double slo = ((double) y2-y1)/((double) x2-x1);
+            return roundedToHundredth(slo);
         }
 
 
@@ -72,7 +72,61 @@ public LinearEquation(int x1, int y1, int x2, int y2){
                    subtraction!
          */
         public String equation(){
+            String equat = "y = ";
+            double slope = slope();
+            double yInt = yIntercept();
+            int yInt2 = (int) yInt;
+            if(slope == 0){
+                if(yInt < 0){
+                    if(yInt%1 != 0) {
+                        equat += "-" + yInt * (-1);
+                        return equat;
+                    }
+                        equat += "-" + yInt2 * (-1);
+                        return equat;
 
+                }
+                if(yInt%1 != 0) {
+                    return equat + yInt;
+                }
+                return equat + yInt2;
+            }
+            if(slope < 0) {
+                equat += "-";
+            }
+            if(slope%1 != 0){
+                String y = y2 - y1 + "";
+                String x = x2 - x1 + "";
+                if(y.indexOf("-") != -1 && x.indexOf("-") != -1){
+                    y = y.substring(1);
+                    x = x.substring(1);
+                }else if(x.indexOf("-") != -1){
+                    x = x.substring(1);
+                }else if(y.indexOf("-") != -1){
+                    y = y.substring(1);
+                }
+                equat += (y) + "/" + (x) + "x";
+            }else{
+                equat += (int) slope + "x";
+            }
+            if(yInt == 0) {
+                return equat;
+            }
+
+            if(yInt%1 != 0) {
+                if (yInt < 0) {
+                    equat += " - " + yInt * (-1);
+                    return equat;
+                }
+                equat += " + " + yInt;
+                return equat;
+            }
+                if (yInt2 < 0) {
+                    equat += " - " + yInt2 * (-1);
+                    return equat;
+                }
+                equat += " + " + yInt2;
+            return equat;
         }
 
 
@@ -82,7 +136,7 @@ public LinearEquation(int x1, int y1, int x2, int y2){
         /* Returns a String of the coordinate point on the line that has the given x value, with
            both x and y coordinates as decimals to the nearest hundredth, e.g (-5.0, 6.75) */
         public String coordinateForX(double xValue){
-
+            return "(" + xValue + ", " + (slope()*xValue + yIntercept()) + ")";
         }
 
 
@@ -95,7 +149,7 @@ public LinearEquation(int x1, int y1, int x2, int y2){
             HINT:  the Math.round method can help with this!
          */
         public double roundedToHundredth(double toRound){
-
+            return (Math.round((toRound*100.0))) / 100.0;
         }
 
 
@@ -113,6 +167,12 @@ public LinearEquation(int x1, int y1, int x2, int y2){
 
           */
         public String lineInfo(){
-
+            String info = "The two points are: " + "(" + x1 + ", " + y1 + ") and (" + x2 + ", " + y2 + ")";
+            info += "\nThe equation of the line between these points is: " + equation();
+            info += "\nThe slope of this line is: " + slope();
+            info += "\nThe y-intercept of the line is " + yIntercept();
+            info += "\nThe distance between the two points is: " + distance();
+            return info;
         }
 
+}
