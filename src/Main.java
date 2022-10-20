@@ -19,6 +19,11 @@ public class Main {
         }else {
             LinearEquation line = new LinearEquation(x1, y1, x2, y2);
             System.out.println(line.lineInfo());
+            System.out.println();
+            System.out.println("Enter a value for x: ");
+            int xcoord = input.nextInt();
+            System.out.println();
+            System.out.println(line.coordinateForX(xcoord));
         }
     }
 }
